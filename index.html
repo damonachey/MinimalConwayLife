@@ -1,0 +1,20 @@
+<canvas id="canvas" style="border: 1px solid black" width="600" height="600"></canvas>
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const neighbors = ([x, y]) => [[x - 1, y - 1], [x - 1, y], [x - 1, y + 1], [x, y - 1], [x, y + 1], [x + 1, y - 1], [x + 1, y], [x + 1, y + 1]];
+    let cells = [[1, 0], [3, 1], [0, 2], [1, 2], [4, 2], [5, 2], [6, 2]]; // acorn
+
+    setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        cells.forEach(([x, y]) => ctx.fillRect(x + canvas.width / 2, y + canvas.height / 2, 1, 1));
+
+        const neighborCounts = cells
+            .flatMap(neighbors)
+            .reduce((counts, [x, y]) => counts.set(`${x},${y}`, (counts.get(`${x},${y}`) || 0) + 1), new Map());
+
+        cells = [...neighborCounts.entries()]
+            .filter(([key, count]) => count === 3 || (count === 2 && cells.some(([x, y]) => `${x},${y}` === key)))
+            .map(([key]) => key.split(',').map(Number));
+    }, 100);
+</script>
