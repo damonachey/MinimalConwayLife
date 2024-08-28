@@ -11,7 +11,7 @@
 
         const neighborCounts = cells
             .flatMap(neighbors)                                                                                      // Get all neighbors for all cells
-            .reduce((counts, [x, y]) => counts.set(`${x},${y}`, (counts.get(`${x},${y}`) || 0) + 1), new Map());     // Count how many times each cell was a 'neighbor', stored as strings for using as a key in the Map
+            .reduce((counts, [x, y]) => counts.set(`${x},${y}`, (counts.get(`${x},${y}`) || 0) + 1), new Map());     // Count how many times each cell was a 'neighbor', coordinates converted to stored as strings for using as a key in the Map
 
         cells = [...neighborCounts.entries()]
             .filter(([key, count]) => count === 3 || (count === 2 && cells.some(([x, y]) => `${x},${y}` === key)))   // If a cell was a neighbor three times make 'alive' or if was a neighbor twice and in the original cell list
