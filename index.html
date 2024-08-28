@@ -15,6 +15,6 @@
 
         cells = [...neighborCounts.entries()]
             .filter(([key, count]) => count === 3 || (count === 2 && cells.some(([x, y]) => `${x},${y}` === key)))   // If a cell was a neighbor three times make 'alive' or if was a neighbor twice and in the original cell list
-            .map(([key]) => key.split(',').map(Number));                                                             // convert back to [x, y] array from the string
-    }, 100);
+            .map(([key]) => key.split(',').map(Number));                                                             // Convert back to [x, y] array from the string
+    }, 100);                                                                                                         // Run ten frames per second (seemed like a nice speed)
 </script>
