@@ -2,19 +2,19 @@
 <script>
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
-    const neighbors = ([x, y]) => [[x - 1, y - 1], [x - 1, y], [x - 1, y + 1], [x, y - 1], [x, y + 1], [x + 1, y - 1], [x + 1, y], [x + 1, y + 1]];
-    let cells = [[1, 0], [3, 1], [0, 2], [1, 2], [4, 2], [5, 2], [6, 2]]; // acorn
+    const neighbors = ([x, y]) => [[x - 1, y - 1], [x - 1, y], [x - 1, y + 1], [x, y - 1], [x, y + 1], [x + 1, y - 1], [x + 1, y], [x + 1, y + 1]]; // return the 8 coordinates that are neighbors of the current [x, y]
+    let cells = [[1, 0], [3, 1], [0, 2], [1, 2], [4, 2], [5, 2], [6, 2]];                                                                           // acorn starting pattern just because it's interesting and doesn't stabilize for over 5,000 iterations
 
     setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        cells.forEach(([x, y]) => ctx.fillRect(x + canvas.width / 2, y + canvas.height / 2, 1, 1));
+        ctx.clearRect(0, 0, canvas.width, canvas.height);                                                            // Clear the screen
+        cells.forEach(([x, y]) => ctx.fillRect(x + canvas.width / 2, y + canvas.height / 2, 1, 1));                  // Draw all cells
 
         const neighborCounts = cells
-            .flatMap(neighbors)
-            .reduce((counts, [x, y]) => counts.set(`${x},${y}`, (counts.get(`${x},${y}`) || 0) + 1), new Map());
+            .flatMap(neighbors)                                                                                      // Get all neighbors for all cells
+            .reduce((counts, [x, y]) => counts.set(`${x},${y}`, (counts.get(`${x},${y}`) || 0) + 1), new Map());     // Count how many times each cell was a 'neighbor', stored as strings for using as a key in the Map
 
         cells = [...neighborCounts.entries()]
-            .filter(([key, count]) => count === 3 || (count === 2 && cells.some(([x, y]) => `${x},${y}` === key)))
-            .map(([key]) => key.split(',').map(Number));
+            .filter(([key, count]) => count === 3 || (count === 2 && cells.some(([x, y]) => `${x},${y}` === key)))   // If a cell was a neighbor three times make 'alive' or if was a neighbor twice and in the original cell list
+            .map(([key]) => key.split(',').map(Number));                                                             // convert back to [x, y] array from the string
     }, 100);
 </script>
